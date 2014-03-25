@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <MVentory_CDN>
+      <version>0</version>
+    </MVentory_CDN>
+  </modules>
+
+  <global>
+    <models>
+      <cdn>
+        <class>MVentory_CDN_Model</class>
+      </cdn>
+
+      <catalog>
+        <rewrite>
+          <product_image>MVentory_CDN_Model_Mage_Catalog_Product_Image</product_image>
+        </rewrite>
+      </catalog>
+    </models>
+
+    <blocks>
+      <cdn>
+        <class>MVentory_CDN_Block</class>
+      </cdn>
+    </blocks>
+
+    <helpers>
+      <cdn>
+        <class>MVentory_CDN_Helper</class>
+      </cdn>
+
+      <catalog>
+        <rewrite>
+          <image>MVentory_CDN_Helper_Mage_Catalog_Image</image>
+        </rewrite>
+      </catalog>
+    </helpers>
+
+    <events>
+      <!-- Requires M. >= 1.7 -->
+      <catalog_product_media_save_before>
+        <observers>
+          <cdn_upload>
+            <type>singleton</type>
+            <class>MVentory_CDN_Model_Observer</class>
+            <method>upload</method>
+          </cdn_upload>
+        </observers>
+      </catalog_product_media_save_before>
+    </events>
+  </global>
+
+  <admin>
+    <routers>
+      <cdn_adminhtml>
+        <use>admin</use>
+        <args>
+          <module>MVentory_CDN</module>
+          <frontName>cdn</frontName>
+        </args>
+      </cdn_adminhtml>
+    </routers>
+  </admin>
+
+  <adminhtml>
+    <acl>
+      <resources>
+        <admin>
+          <children>
+            <system>
+              <children>
+                <config>
+                  <children>
+                    <cdn>
+                      <title>mVentory CDN</title>
+                    </cdn>
+                  </children>
+                </config>
+              </children>
+            </system>
+          </children>
+        </admin>
+      </resources>
+    </acl>
+  </adminhtml>
+</config>
