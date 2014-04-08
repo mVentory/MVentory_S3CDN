@@ -16,6 +16,13 @@
 -->
 
 <config>
+  <tabs>
+    <mventory translate="label" module="cdn">
+      <label>mVentory</label>
+      <sort_order>100</sort_order>
+    </mventory>
+  </tabs>
+
   <sections>
     <cdn translate="label" module="cdn">
       <label>CDN</label>
