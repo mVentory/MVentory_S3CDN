@@ -1,35 +1,101 @@
-Introduction
+This extension stores product images on Amazon S3. It greately reduces server reqirements and allows using Amazon CloudFront CDN.
 
-All product images are stored on S3. mVentory supports uploading new, displaying existing and moving them in bulk between the site, user and S3.
+All product photos uploaded to Magento `media` folder are copied to a preconfigured S3 bucket.
+Magento generates resized product images on demand and stores them in `media` folder for re-use. This extension requires product image sizes to be known in advance to generate all possible sizes and store them on S3. It slightly increases the amount of stored data.
 
-S3 holds all images, including all resized ones. No dynamic resizing takes place.
-S3 structure
 
-Images are stored in S3 with the same names and paths as in Mage. The root path includes the s3 domain name, the bucket name, the site name, followed by the normal magento path.
+#####S3 structure
 
-E.g. http://d3jbsz0dxpzi11.cloudfront.net/t1/215x170/1/3/1335478295542.jpg
+Images are stored in S3 with the same names and paths as in Magento. The root path includes the s3 domain name, the bucket name, the site name, followed by the normal magento path.
+
+     E.g. http://d3jbsz0dxpzi11.cloudfront.net/t1/215x170/1/3/1335478295542.jpg
 
 where t1 is the name of the site/storefront.
-Security policy
 
-    Restrict uploads to the IP of the magento server.
-    Use a key for a user specially created for that purpose, one per site
-    Restrict the user rights to uploading image only, use IAM for this
-    Downloading images is public
+#####Security policy
 
-Configuration
+Magento admin stores an AWS key for accessing S3. Limit the account rights to minimise potential damage should the key fall into wrong hands.
 
-Use Product Images CDN tab inside mVentory tab in mage system config.
+1. Use IAM to create a user with limited access
+2. Restrict uploads to the IP of your Magento server
 
-Bucket name: just the name of the bucket, no paths, e.g. mventorytest
 
-Resized dimensions: a comma-separate list, e.g. 300x, 300x300, 70x70, 170x170, 215x170, 65x65, 310x, 210x, 90x
-Image uploading
+##Installation
 
-A newly uploaded imaged is stored in the media folder at first. The controller uploads it to S3, resizes and uploads all resized images to S3 as well. The user get a response from the server after uploading to S3 is finished. Errors are written to the log, some information is returned to the user.
+* Install the extension (magento connect link)
+* You should see mVentory group with S3CDN tab on System Configuration page.
+* Log out of Magento admin and log back in if you don't see the tab or get an error after clicking on it.
 
-Locally stored images are left in media folder, but can be deleted any time to free space.
-Image migration
+##AWS S3 configuration
+
+These instructions are only a guide and are not intended to be the best practice recommendation.
+
+1. Create a buket. 
+2. Create a read-only bucket policy
+
+    {
+    	"Version": "2008-10-17",
+    	"Id": "Policy1234567",
+    	"Statement": [
+    		{
+    			"Sid": "Stmt1234567",
+    			"Effect": "Allow",
+    			"Principal": {
+    				"AWS": "*"
+    			},
+    			"Action": "s3:GetObject",
+    			"Resource": "arn:aws:s3:::mybucketname/*"
+    		}
+    	]
+    }
+
+Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access to files and subfolders, not just the bucket.
+
+3. Create a folder in the bucket with the name of your site for consistency. You can use any name or keep the files in the root of the bucket if your Magento installation has only one website configured.
+
+4. Create an IAM user with the following permissions:
+        {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:Get*",
+                "s3:List*",
+                "s3:Put*"
+              ],
+              "Resource": "arn:aws:s3:::mybucketname/*"
+            }
+          ]
+        }
+
+5. Save the access keys of the IAM user.
+
+##Magento configuration 
+
+1. Go to System -> Configuration -> mVentory / CDN
+2. Log out and log in if you get 404 error
+3. Copy access keys and bucket name to the Default configuration level
+4. Enter a comma-separated list of file sizes (Resizing dimentions). E.g. you can use this list for the default theme:
+`1200x900, 670x502, 310x, 300x, 215x170, 210x, 200x, 170x, 135x, 125x, 120x, 113x, 100x, 90x, 75x, 75x75, 70x, 50x`
+5. Switch to the website level.
+6. Enter the bucket name, if any. Enter only the name of the bucket, e.g. shop1. Do not enter the rest of the path.
+7. Save
+8. Press on `Upload placeholders` button to generate standard magento image placeholders of the specified dimensions and upload them to S3.
+9. Switch to General/Web tab and enter the URL of the bucket into `Base Media URL` text boxes in Secure and Unsecure section. We recommend using a CloudFront URL. 
+Examples:
+ 	
+`https://s3.amazonaws.com/amn34/` for direct S3 access
+`http://dk721sbikbl1.cloudfront.net/` via CloudFront
+
+
+####Testing the set up.
+
+1. Rename the existing media folder and create a new one so that it is empty and you still have all your files locally.
+2. Create a new product.
+3. The URLs of the product images should be pointing at AWS.
+
+ 
+##Image migration
 
 Use ... to migrate all original images from the local storage to S3.
 
@@ -40,10 +106,9 @@ Resizing dimensions are taken from mage config.
 Uploaded images are not deleted.
 
 Errors are written to an error log. The script will not stop on errors. Files existing on S3 are overwritten by the local copy.
-Image deletion
-
-Images deleted via ... are deleted from S3. If an image is deleted by some other means it will not be deleted from S3.
-Bulk image resizing
+ 
+ 
+##Bulk image resizing
 
 Use ... to resize original images on S3 to something else.
 
@@ -54,7 +119,25 @@ Resizing dimensions are taken from mage config.
 The extension downloads the originals from S3, resizes them and uploads the resized images to their location in S3.
 
 Errors are written to an error log. The script will not stop on errors. Files existing on S3 are overwritten by the local copy.
-Displaying images from S3
+
+
+
+##How it works
+
+####Image uploading
+
+A newly uploaded imaged is stored in the media folder at first. The controller uploads it to S3, resizes and uploads all resized images to S3 as well. The user get a response from the server after uploading to S3 is finished. Errors are written to the log, some information is returned to the user.
+
+Locally stored images are left in media folder, but can be deleted any time to free space.
+
+
+
+####Image deletion
+
+Images deleted via ... are deleted from S3. If an image is deleted by some other means it will not be deleted from S3.
+
+
+####Displaying images from S3
 
 mVentory substitutes the normal magento path with the path from Admin/System/Config/Web/Base Media URL followed by the normal Magento path and the file name. There should be no need to change the theme, unless it bypasses normal magento path generation functions.
 
