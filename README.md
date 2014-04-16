@@ -30,9 +30,11 @@ Magento admin stores an AWS key for accessing S3. Limit the account rights to mi
 
 These instructions are only a guide and are not intended to be the best practice recommendation.
 
-1. Create a buket. 
-2. Create a read-only bucket policy
+1) Create a buket.
 
+2) Create a read-only bucket policy:
+
+```
     {
     	"Version": "2008-10-17",
     	"Id": "Policy1234567",
@@ -48,13 +50,15 @@ These instructions are only a guide and are not intended to be the best practice
     		}
     	]
     }
-
+```
 Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access to files and subfolders, not just the bucket.
 
-3. Create a folder in the bucket with the name of your site for consistency. You can use any name or keep the files in the root of the bucket if your Magento installation has only one website configured.
+3) Create a folder in the bucket with the name of your site for consistency. You can use any name or keep the files in the root of the bucket if your Magento installation has only one website configured.
 
-4. Create an IAM user with the following permissions:
-        {
+4) Create an IAM user with the following permissions:
+
+```
+     {
           "Statement": [
             {
               "Effect": "Allow",
@@ -66,9 +70,9 @@ Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access t
               "Resource": "arn:aws:s3:::mybucketname/*"
             }
           ]
-        }
-
-5. Save the access keys of the IAM user.
+     }
+```
+5) Save the access keys of the IAM user.
 
 ##Magento configuration 
 
