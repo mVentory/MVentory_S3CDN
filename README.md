@@ -35,21 +35,21 @@ These instructions are only a guide and are not intended to be the best practice
 2) Create a read-only bucket policy:
 
 ```
-    {
-    	"Version": "2008-10-17",
-    	"Id": "Policy1234567",
-    	"Statement": [
-    		{
-    			"Sid": "Stmt1234567",
-    			"Effect": "Allow",
-    			"Principal": {
-    				"AWS": "*"
-    			},
-    			"Action": "s3:GetObject",
-    			"Resource": "arn:aws:s3:::mybucketname/*"
-    		}
-    	]
-    }
+{
+    "Version": "2008-10-17",
+    "Id": "Policy1234567",
+    "Statement": [
+    	{
+    		"Sid": "Stmt1234567",
+    		"Effect": "Allow",
+    		"Principal": {
+    			"AWS": "*"
+    		},
+    		"Action": "s3:GetObject",
+    		"Resource": "arn:aws:s3:::mybucketname/*"
+    	}
+    ]
+}
 ```
 Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access to files and subfolders, not just the bucket.
 
@@ -58,19 +58,19 @@ Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access t
 4) Create an IAM user with the following permissions:
 
 ```
-     {
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "s3:Get*",
-                "s3:List*",
-                "s3:Put*"
-              ],
-              "Resource": "arn:aws:s3:::mybucketname/*"
-            }
-          ]
-     }
+{
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": [
+           "s3:Get*",
+           "s3:List*",
+           "s3:Put*"
+         ],
+         "Resource": "arn:aws:s3:::mybucketname/*"
+       }
+     ]
+}
 ```
 5) Save the access keys of the IAM user.
 
