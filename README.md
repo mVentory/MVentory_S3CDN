@@ -1,4 +1,4 @@
-This extension stores product images on Amazon S3. It greately reduces server reqirements and allows using Amazon CloudFront CDN.
+This extension stores product images on Amazon S3. It greately reduces server requirements and allows using Amazon CloudFront CDN.
 
 All product photos uploaded to Magento `media` folder are copied to a preconfigured S3 bucket.
 Magento generates resized product images on demand and stores them in `media` folder for re-use. This extension requires product image sizes to be known in advance to generate all possible sizes and store them on S3. It slightly increases the amount of stored data.
@@ -6,11 +6,11 @@ Magento generates resized product images on demand and stores them in `media` fo
 
 #####S3 structure
 
-Images are stored in S3 with the same names and paths as in Magento. The root path includes the s3 domain name, the bucket name, the site name, followed by the normal magento path.
+Images are stored in S3 with the same names and paths as in Magento. The root path includes the s3 domain name, the bucket name, the site name (prefix), followed by the normal magento path.
 
      E.g. http://d3jbsz0dxpzi11.cloudfront.net/t1/215x170/1/3/1335478295542.jpg
 
-where t1 is the name of the site/storefront.
+where t1 is the name (prefix) of the site/storefront.
 
 #####Security policy
 
@@ -23,7 +23,7 @@ Magento admin stores an AWS key for accessing S3. Limit the account rights to mi
 ##Installation
 
 * Install the extension (magento connect link)
-* You should see mVentory group with S3CDN tab on System Configuration page.
+* You should see mVentory group with CDN tab on System Configuration page.
 * Log out of Magento admin and log back in if you don't see the tab or get an error after clicking on it.
 
 ##AWS S3 configuration
@@ -82,7 +82,7 @@ Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access t
 4. Enter a comma-separated list of file sizes (Resizing dimentions). E.g. you can use this list for the default theme:
 `1200x900, 670x502, 310x, 300x, 215x170, 210x, 200x, 170x, 135x, 125x, 120x, 113x, 100x, 90x, 75x, 75x75, 70x, 50x`
 5. Switch to the website level.
-6. Enter the bucket name, if any. Enter only the name of the bucket, e.g. shop1. Do not enter the rest of the path.
+6. Enter the website prefix, if any. Enter only the prefix, e.g. shop1. Do not enter the rest of the path.
 7. Save
 8. Press on `Upload placeholders` button to generate standard magento image placeholders of the specified dimensions and upload them to S3.
 9. Switch to General/Web tab and enter the URL of the bucket into `Base Media URL` text boxes in Secure and Unsecure section. We recommend using a CloudFront URL. 
@@ -145,11 +145,11 @@ Images deleted via ... are deleted from S3. If an image is deleted by some other
 
 mVentory substitutes the normal magento path with the path from Admin/System/Config/Web/Base Media URL followed by the normal Magento path and the file name. There should be no need to change the theme, unless it bypasses normal magento path generation functions.
 
-All image sizes must exist in S3. No dynamic reszing takes place.
+All image sizes must exist in S3. No dynamic resizing takes place.
 
 Make sure that the placeholder image is uploaded to S3 as well.
 
-All code for displaying images normally takes their URLs from "catalog/image" helper (app/code/core/Mage/Catalog/Helper/Image.php). We redefined this class with our own (app/code/community/MVentory/Tm/Helper/Image.php) and have overridden the toString() method so that it returns URLs pointing to images on CDN.
+All code for displaying images normally takes their URLs from "catalog/image" helper (app/code/core/Mage/Catalog/Helper/Image.php). We redefined this class with our own (app/code/community/MVentory/CDN/Helper/Image.php) and have overridden the toString() method so that it returns URLs pointing to images on CDN.
 Compatibility with other extensions
 
 Access to S3 is abstracted by redefining ... in mVentory. If a file is not found in the local storage mVentory tried to download it from S3 for other extensions to use. If an image is saved via ... it is uploaded to S3. Remember that /media/ folder can be purged at any time.
