@@ -156,10 +156,11 @@ class MVentory_CDN_Model_Observer {
       foreach ($dimensions as $dimension) {
         //... resize original image and get path to resized image
         $newFile = Mage::getModel('catalog/product_image')
+                     ->setDestinationSubdir('image')
                      ->setSize($dimension)
-                     ->setBaseFile($fileName)
                      ->setKeepFrame(false)
                      ->setConstrainOnly(true)
+                     ->setBaseFile($fileName)
                      ->resize()
                      ->saveFile()
                      ->getNewFile();
