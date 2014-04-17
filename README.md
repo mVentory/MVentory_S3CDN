@@ -101,7 +101,7 @@ Examples:
  
 ##Image migration
 
-Use ... to migrate all original images from the local storage to S3.
+Use `utils/upload-to-s3` script to migrate all original images from the local storage to S3.
 
 The script can called from ... and requires ... the user to be logged in as ... .
 
@@ -114,7 +114,7 @@ Errors are written to an error log. The script will not stop on errors. Files ex
  
 ##Bulk image resizing
 
-Use ... to resize original images on S3 to something else.
+Use `utils/resize-on-s3` script to resize original images on S3 to something else.
 
 The script can called from ... and requires ... the user to be logged in as ... . It can be done from the same magento instance or from any other, as long as the keys, paths and sizes match.
 
