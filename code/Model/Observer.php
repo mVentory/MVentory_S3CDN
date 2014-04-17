@@ -32,13 +32,14 @@ class MVentory_CDN_Model_Observer {
 
     $images = $observer->getEvent()->getImages();
 
-    //!!!TODO: we can't use current website because some product can be created
-    //throw another website and all of its images is uploaded to that website
-    //scope. So we depend on MVentory logic.
-    $helper = Mage::helper('mventory_tm/product');
-    $website = $helper->getWebsite($product);
-
-    $store = $website->getDefaultStore();
+    //Use product helper from MVentory_Tm if it's installed and is activated
+    //The helper is used to get correct website for the product when MVentory_Tm
+    //extension is used
+    $store = Mage::helper('core')->isModuleEnabled('MVentory_Tm')
+               ? Mage::helper('mventory_tm/product')
+                   ->getWebsite($product)
+                   ->getDefaultStore()
+                 : Mage::app()->getStore();
 
     //Get settings for S3
     $accessKey = $store->getConfig(MVentory_CDN_Model_Config::ACCESS_KEY);

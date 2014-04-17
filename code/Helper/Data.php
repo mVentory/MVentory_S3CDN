@@ -22,6 +22,16 @@
 class MVentory_CDN_Helper_Data extends Mage_Core_Helper_Abstract {
 
   private $_prefix = null;
+  private $_productHelper = null;
+
+  function __construct () {
+
+    //Load product helper from MVentory_Tm if it's installed and is activated
+    //The helper is used to get correct website for the product when MVentory_Tm
+    //extension is used
+    if ($this->isModuleEnabled('MVentory_Tm'))
+      $this->_productHelper = Mage::helper('mventory_tm/product');
+  }
 
   /**
    * Downloads image from S3 by its absolute path on FS.
@@ -74,12 +84,9 @@ class MVentory_CDN_Helper_Data extends Mage_Core_Helper_Abstract {
    * @return Zend_Service_Amazon_S3
    */
   protected function _getS3 ($website = null) {
-
-    //!!!TODO: we can't use current website because some product can be created
-    //throw another website and all of its images is uploaded to that website
-    //scope. So we depend on MVentory logic.
-    $store = $website === null
-               ? Mage::helper('mventory_tm/product')
+    $store = ($this->_productHelper && $website === null)
+               ? $this
+                   ->_productHelper
                    ->getWebsite()
                    ->getDefaultStore()
                  : Mage::app()->getWebsite($website)->getDefaultStore();
