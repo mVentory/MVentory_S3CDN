@@ -33,13 +33,20 @@ class MVentory_CDN_Model_Observer {
     $images = $observer->getEvent()->getImages();
 
     //Use product helper from MVentory_Tm if it's installed and is activated
-    //The helper is used to get correct website for the product when MVentory_Tm
+    //The helper is used to get correct store for the product when MVentory_Tm
     //extension is used
-    $store = Mage::helper('core')->isModuleEnabled('MVentory_Tm')
-               ? Mage::helper('mventory_tm/product')
-                   ->getWebsite($product)
-                   ->getDefaultStore()
-                 : Mage::app()->getStore();
+    //Change current store if product's store is different for correct
+    //file name of images
+    if (Mage::helper('core')->isModuleEnabled('MVentory_Tm')) {
+      $store = Mage::helper('mventory_tm/product')
+        ->getWebsite($product)
+        ->getDefaultStore();
+
+      $changeStore = $store->getId() != Mage::app()->getStore()->getId();
+    } else {
+      $store = Mage::app()->getStore();
+      $changeStore = false;
+    }
 
     //Get settings for S3
     $accessKey = $store->getConfig(MVentory_CDN_Model_Config::ACCESS_KEY);
@@ -62,6 +69,11 @@ class MVentory_CDN_Model_Observer {
     //Prepare meta data for uploading. All uploaded images are public
     $meta = array(Zend_Service_Amazon_S3::S3_ACL_HEADER
                     => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ);
+
+    if ($changeStore) {
+      $emu = Mage::getModel('core/app_emulation');
+      $origEnv = $emu->startEnvironmentEmulation($store);
+    }
 
     $config = Mage::getSingleton('catalog/product_media_config');
 
@@ -145,6 +157,9 @@ class MVentory_CDN_Model_Observer {
         $msg = 'Can\'t upload original image (' . $file . ') to S3 with '
                . $cdnPath . ' key';
 
+        if ($changeStore)
+          $emu->stopEnvironmentEmulation($origEnv);
+
         throw new Mage_Core_Exception($msg);
       }
 
@@ -174,9 +189,15 @@ class MVentory_CDN_Model_Observer {
           $msg = 'Can\'t upload resized (' . $dimension . ') image (' . $file
                  . ') to S3 with ' . $cdnPath . ' key';
 
+          if ($changeStore)
+            $emu->stopEnvironmentEmulation($origEnv);
+
           throw new Mage_Core_Exception($msg);
         }
       }
     }
+
+    if ($changeStore)
+      $emu->stopEnvironmentEmulation($origEnv);
   }
 }
