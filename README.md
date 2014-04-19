@@ -87,13 +87,13 @@ Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access t
 
 5. Switch to the website level.
 
-6. Enter the website prefix, if any. Enter only the prefix, e.g. `shop1`. Do not enter the rest of the path.
+6. _Enter the website prefix (or is this folder name in the S3 bucket??), if any. Enter only the prefix, e.g. `shop1`. Do not enter the rest of the path._
 
-7. Save
+7. Save config.
 
 8. Press on _Upload placeholders_ button to generate standard magento image placeholders of the specified dimensions and upload them to S3.
 
-9. Switch to _General/Web_ tab and enter the URL of the bucket into _Base Media URL_ text boxes in _Secure_ and _Unsecure_ section. We recommend using a CloudFront URL. 
+9. Switch to _General/Web_ tab. Enter the URL of the bucket into _Base Media URL_ text boxes in _Secure_ and _Unsecure_ section. We recommend using a CloudFront URL. 
 Examples:
  	
 `https://s3.amazonaws.com/amn34/` for direct S3 access
