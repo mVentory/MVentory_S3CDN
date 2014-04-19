@@ -74,13 +74,19 @@ Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access t
 ```
 5) **Save the access keys** of the IAM user.
 
+####Bucket URL
+
+Obtain and test the bucket URL. It can be in a form of `https://amn34.s3.amazonaws.com/some/path/to/file.jpg` or `https://s3.amazonaws.com/amn34/some/path/to/file.jpg` where `amn34` is the bucket name.
+
+Test a manually uploaded image to make sure the URL is correct.
+
 ##Magento configuration 
 
 1. Go to _System -> Configuration -> mVentory / CDN_
 
 2. Log out of admin and log back in in if you get 404 error
 
-3. Copy access keys and bucket name to the Default configuration level
+3. Copy access keys and bucket name to the _Default_ configuration level
 
 4. Enter a comma-separated list of file sizes (_Resizing dimentions_). E.g. you can use this list for the default theme:
 `50x, 56x, 75x75, 75x, 76x, 85x, 100x100, 113x113, 125x125, 125x, 135x, 265x`
@@ -99,6 +105,11 @@ Examples:
 * `https://amn34.s3.amazonaws.com/` for direct S3 access
 * `http://dk721sbikbl1.cloudfront.net/` via CloudFront
 
+#####How to get bucket URL
+
+You can get your bucket URL from AWS console, but it may require a different endpoint for the actual files. 
+
+E.g. Your bucket URL is usually `bucketname.s3.amazonaws.com`
 
 ####Testing the set up.
 
