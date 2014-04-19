@@ -76,7 +76,7 @@ Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access t
 
 ####Bucket URL
 
-Obtain and test the bucket URL. It can be in a form of `https://amn34.s3.amazonaws.com/some/path/to/file.jpg` or `https://s3.amazonaws.com/amn34/some/path/to/file.jpg` where `amn34` is the bucket name.
+Obtain and test the bucket URL. It can be in a form of `https://s3.amazonaws.com/amn34/some/path/to/file.jpg` (works only for some buckets in some regions) or `https://amn34.s3.amazonaws.com/some/path/to/file.jpg` (should work for all types of buckets from all regions),  where `amn34` is the bucket name.
 
 Test a manually uploaded image to make sure the URL is correct.
 
