@@ -96,8 +96,8 @@ Replace `mybucketname` with the name of your bucket. Keep `/*` to allow access t
 9. Switch to _General/Web_ tab. Enter the URL of the bucket into _Base Media URL_ text boxes in _Secure_ and _Unsecure_ section. We recommend using a CloudFront URL. 
 Examples:
  	
-`https://s3.amazonaws.com/amn34/` for direct S3 access
-`http://dk721sbikbl1.cloudfront.net/` via CloudFront
+* `https://amn34.s3.amazonaws.com/` for direct S3 access
+* `http://dk721sbikbl1.cloudfront.net/` via CloudFront
 
 
 ####Testing the set up.
