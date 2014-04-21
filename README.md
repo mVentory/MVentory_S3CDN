@@ -108,7 +108,7 @@ Examples:
 * `http://<bucket_name>.s3.amazonaws.com/` for direct S3 access
 * `http://dk721sbikbl1.cloudfront.net/` via CloudFront
 
-### Testing the set up.
+### Testing the set up
 
 1. Create a new product and view it in the front-end.
 2. The URLs of the product images should be pointing at AWS and images should be displayed correctly.
