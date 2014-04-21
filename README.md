@@ -97,6 +97,8 @@ Test a manually uploaded image to make sure the URL is correct.
 
 7. Save config.
 
+** DO NOT press _Upload placeholders_ until you save your changes.**
+
 8. Press on _Upload placeholders_ button to generate standard magento image placeholders of the specified dimensions and upload them to S3.
 
 9. Switch to _General/Web_ tab. Enter the URL of the bucket into _Base Media URL_ text boxes in _Secure_ and _Unsecure_ section. We recommend using a CloudFront URL. 
