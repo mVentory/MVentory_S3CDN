@@ -51,7 +51,18 @@ class MVentory_CDN_Helper_Data extends Mage_Core_Helper_Abstract {
     if (!file_exists(dirname($path)))
       mkdir(dirname($path), 0777, true);
 
-    return $s3->getObjectStream($object, $path) ? $path : false;
+    if ($s3->getObjectStream($object, $path) === false) {
+
+      //When error happens it saves response from S3 with error message
+      //to the specified file. We need to remove that file so Magento code
+      //don't think that image was downloaded successfully
+      if (file_exists($path))
+        unlink($path);
+
+      return false;
+    }
+
+    return $path;
   }
 
   /**
