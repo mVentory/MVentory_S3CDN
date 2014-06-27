@@ -32,13 +32,13 @@ class MVentory_CDN_Model_Observer {
 
     $images = $observer->getEvent()->getImages();
 
-    //Use product helper from MVentory_Tm if it's installed and is activated
-    //The helper is used to get correct store for the product when MVentory_Tm
+    //Use product helper from MVentory_API if it's installed and is activated
+    //The helper is used to get correct store for the product when MVentory_API
     //extension is used
     //Change current store if product's store is different for correct
     //file name of images
-    if (Mage::helper('core')->isModuleEnabled('MVentory_Tm')) {
-      $store = Mage::helper('mventory_tm/product')
+    if (Mage::helper('core')->isModuleEnabled('MVentory_API')) {
+      $store = Mage::helper('mventory/product')
         ->getWebsite($product)
         ->getDefaultStore();
 

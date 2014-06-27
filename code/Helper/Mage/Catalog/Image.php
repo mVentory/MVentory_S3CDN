@@ -25,11 +25,11 @@ class MVentory_CDN_Helper_Mage_Catalog_Image extends Mage_Catalog_Helper_Image {
 
   function __construct () {
 
-    //Load product helper from MVentory_Tm if it's installed and is activated
-    //The helper is used to get correct website for the product when MVentory_Tm
-    //extension is used
-    if ($this->isModuleEnabled('MVentory_Tm'))
-      $this->_productHelper = Mage::helper('mventory_tm/product');
+    //Load product helper from MVentory_API if it's installed and is activated
+    //The helper is used to get correct website for the product
+    //when MVentory_API extension is used
+    if ($this->isModuleEnabled('MVentory_API'))
+      $this->_productHelper = Mage::helper('mventory/product');
   }
 
   /**
