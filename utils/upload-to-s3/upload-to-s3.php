@@ -57,14 +57,12 @@ $totalImages = count($images);
 
 Mage::log($totalImages . ' images to process', null, 's3.log');
 
-$helper = Mage::helper('mventory_tm');
-
 //Get settings for S3
-$accessKey = $helper->getConfig(MVentory_Tm_Model_Observer::XML_PATH_CDN_ACCESS_KEY, $website);
-$secretKey = $helper->getConfig(MVentory_Tm_Model_Observer::XML_PATH_CDN_SECRET_KEY, $website);
-$bucket = $helper->getConfig(MVentory_Tm_Model_Observer::XML_PATH_CDN_BUCKET, $website);
-$prefix = $helper->getConfig(MVentory_Tm_Model_Observer::XML_PATH_CDN_PREFIX, $website);
-$dimensions = $helper->getConfig(MVentory_Tm_Model_Observer::XML_PATH_CDN_DIMENSIONS, $website);
+$accessKey = Mage::getStoreConfig(MVentory_CDN_Model_Config::ACCESS_KEY);
+$secretKey = Mage::getStoreConfig(MVentory_CDN_Model_Config::SECRET_KEY);
+$bucket = Mage::getStoreConfig(MVentory_CDN_Model_Config::BUCKET);
+$prefix = Mage::getStoreConfig(MVentory_CDN_Model_Config::PREFIX);
+$dimensions = Mage::getStoreConfig(Ventory_CDN_Model_Config::DIMENSIONS);
 
 if (!($accessKey && $secretKey && $bucket && $prefix))
   return;
