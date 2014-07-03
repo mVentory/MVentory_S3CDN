@@ -62,7 +62,7 @@ $accessKey = Mage::getStoreConfig(MVentory_CDN_Model_Config::ACCESS_KEY);
 $secretKey = Mage::getStoreConfig(MVentory_CDN_Model_Config::SECRET_KEY);
 $bucket = Mage::getStoreConfig(MVentory_CDN_Model_Config::BUCKET);
 $prefix = Mage::getStoreConfig(MVentory_CDN_Model_Config::PREFIX);
-$dimensions = Mage::getStoreConfig(Ventory_CDN_Model_Config::DIMENSIONS);
+$dimensions = Mage::getStoreConfig(MVentory_CDN_Model_Config::DIMENSIONS);
 
 if (!($accessKey && $secretKey && $bucket && $prefix))
   return;
