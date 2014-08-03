@@ -100,4 +100,13 @@
       </resources>
     </acl>
   </adminhtml>
+
+  <default>
+    <cdn>
+      <settings>
+        <!-- Default value (180 days) for browser caching -->
+        <cache_time>15552000</cache_time>
+      </settings>
+    </cdn>
+  </default>
 </config>
