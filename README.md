@@ -21,6 +21,7 @@ Magento admin stores an AWS key for accessing S3. Limit the account rights to mi
 1. Use IAM to create a user with limited access
 2. Restrict uploads to the IP of your Magento server
 
+***
 
 ##Installation
 
@@ -113,20 +114,41 @@ Examples:
 1. Create a new product and view it in the front-end.
 2. The URLs of the product images should be pointing at AWS and images should be displayed correctly.
 
+### Troubleshooting
+
+1. Check the URL of the images - must point to S3 or CloudFront.
+2. Try accessing the image on S3 - should be public
+3. Use AWS console to check if the image exists on S3
+4. Check if the bucket has a policy for public read-only access
+
+***
  
 ##Image migration
 
-Use `utils/upload-to-s3` script to migrate all original images from the local storage to S3.
+Use `utils/upload-to-s3` script to migrate all original product images from the local storage to S3. All other images in /media/ folder are ignored.
 
-The script can called from ... and requires ... the user to be logged in as ... .
+####Prep
 
-Resizing dimensions are taken from mage config.
+1. Place the script into Magento root
+2. Check your `max_execution_time`. The script may take a while.
+3. Modify the script if you want to limit the scope of the images to a particular website.
+4. Prepare an S3 bucket (see instructions above).
+5. Prepare resizing dimensions (see instructions above)
 
-Uploaded images are not deleted.
+We recomment to configure and test the extension first. Do not run the script if you cannot successfully upload images to S3 via the admin or [Magento Android App](http://mventory.com). 
 
-Errors are written to an error log. The script will not stop on errors. Files existing on S3 are overwritten by the local copy.
- 
- 
+####Notes
+
+* Resizing dimensions are taken from mage config.
+* Oroginal files are uploaded as is, other dimensions are produced on the fly and uploaded.
+* Uploaded images are not deleted.
+* Errors are written to s3.log file. 
+* The script does not stop on errors. 
+* Files existing on S3 are overwritten by the local copy.
+* The script may take a very long time to execute
+
+***
+
 ##Bulk image resizing
 
 Use `utils/resize-on-s3` script to resize original images on S3 to something else.
@@ -139,6 +161,7 @@ The extension downloads the originals from S3, resizes them and uploads the resi
 
 Errors are written to an error log. The script will not stop on errors. Files existing on S3 are overwritten by the local copy.
 
+***
 
 ##Testing the migration
 
