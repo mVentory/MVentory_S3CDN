@@ -140,7 +140,7 @@ We recomment to configure and test the extension first. Do not run the script if
 ####Notes
 
 * Resizing dimensions are taken from mage config.
-* Oroginal files are uploaded as is, other dimensions are produced on the fly and uploaded.
+* Original files are uploaded as is, other dimensions are produced on the fly and uploaded.
 * Uploaded images are not deleted.
 * Errors are written to s3.log file. 
 * The script does not stop on errors. 
