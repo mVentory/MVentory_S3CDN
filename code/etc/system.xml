@@ -115,7 +115,8 @@
 	        <cache_time translate="label comment">
 	          <label>Cache Time</label>
 	          <comment>Sets Cache-Control: max-age header to the specified value, if any. 1hr=3600, 1day=86400, 1week=604800, 1mon=2678400, default=15552000=180days.</comment>
-	          <frontend_type>text</frontend_type>
+	          <hint> Time to cache the image in the browser. Leave blank to use etag/last-modified.</hint>
+              <frontend_type>text</frontend_type>
               <show_in_default>1</show_in_default>
               <show_in_website>0</show_in_website>
               <show_in_store>0</show_in_store>
