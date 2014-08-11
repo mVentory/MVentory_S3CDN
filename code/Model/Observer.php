@@ -69,12 +69,13 @@ class MVentory_CDN_Model_Observer {
 
     //Prepare meta data for uploading.
     $meta = array(
-        //All uploaded images are public
-        Zend_Service_Amazon_S3::S3_ACL_HEADER  => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
+      //All uploaded images are public
+      Zend_Service_Amazon_S3::S3_ACL_HEADER
+        => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
     );
 
     if($cache_size > 0){
-        $meta[MVentory_CDN_Model_Config::AMAZON_CACHE_CONTROL] = 'max-age='.$cache_size;
+      $meta[MVentory_CDN_Model_Config::AMAZON_CACHE_CONTROL] = 'max-age='.$cache_size;
     }
 
     if ($changeStore) {
