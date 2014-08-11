@@ -54,7 +54,7 @@ class MVentory_CDN_Model_Observer {
     $bucket = $store->getConfig(MVentory_CDN_Model_Config::BUCKET);
     $prefix = $store->getConfig(MVentory_CDN_Model_Config::PREFIX);
     $dimensions = $store->getConfig(MVentory_CDN_Model_Config::DIMENSIONS);
-    $cache_size = (int)$store->getConfig(MVentory_CDN_Model_Config::CACHE_SIZE);
+    $cacheSize = (int)$store->getConfig(MVentory_CDN_Model_Config::CACHE_SIZE);
 
     //Return if S3 settings are empty
     if (!($accessKey && $secretKey && $bucket && $prefix))
@@ -74,8 +74,8 @@ class MVentory_CDN_Model_Observer {
         => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
     );
 
-    if($cache_size > 0){
-      $meta[MVentory_CDN_Model_Config::AMAZON_CACHE_CONTROL] = 'max-age='.$cache_size;
+    if($cacheSize > 0){
+      $meta[MVentory_CDN_Model_Config::AMAZON_CACHE_CONTROL] = 'max-age='.$cacheSize;
     }
 
     if ($changeStore) {
