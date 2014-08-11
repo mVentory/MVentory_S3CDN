@@ -26,5 +26,7 @@ abstract class MVentory_CDN_Model_Config {
   const BUCKET = 'cdn/settings/bucket';
   const PREFIX = 'cdn/settings/prefix';
   const DIMENSIONS = 'cdn/settings/resizing_dimensions';
+  const CACHE_SIZE = 'cdn/settings/cache_size';
+  const AMAZON_CACHE_CONTROL = 'x-amz-meta-Cache-Control';
 
 }

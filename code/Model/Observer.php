@@ -54,6 +54,7 @@ class MVentory_CDN_Model_Observer {
     $bucket = $store->getConfig(MVentory_CDN_Model_Config::BUCKET);
     $prefix = $store->getConfig(MVentory_CDN_Model_Config::PREFIX);
     $dimensions = $store->getConfig(MVentory_CDN_Model_Config::DIMENSIONS);
+    $cacheSize = (int)$store->getConfig(MVentory_CDN_Model_Config::CACHE_SIZE);
 
     //Return if S3 settings are empty
     if (!($accessKey && $secretKey && $bucket && $prefix))
@@ -66,9 +67,16 @@ class MVentory_CDN_Model_Observer {
     $dimensions = str_replace(', ', ',', $dimensions);
     $dimensions = explode(',', $dimensions);
 
-    //Prepare meta data for uploading. All uploaded images are public
-    $meta = array(Zend_Service_Amazon_S3::S3_ACL_HEADER
-                    => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ);
+    //Prepare meta data for uploading.
+    $meta = array(
+      //All uploaded images are public
+      Zend_Service_Amazon_S3::S3_ACL_HEADER
+        => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
+    );
+
+    if($cacheSize > 0){
+      $meta[MVentory_CDN_Model_Config::AMAZON_CACHE_CONTROL] = 'max-age='.$cacheSize;
+    }
 
     if ($changeStore) {
       $emu = Mage::getModel('core/app_emulation');
