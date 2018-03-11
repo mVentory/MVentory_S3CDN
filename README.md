@@ -1,3 +1,6 @@
+This project has been discontinued. Check out our next project: a [4G security camera](https://sensorable.io).
+
+
 #S3CDN Extension
 
 The mVentory S3CDN extension moves product image storage from Magento server to Amazon S3. It greately reduces server requirements and allows using Amazon CloudFront CDN.
